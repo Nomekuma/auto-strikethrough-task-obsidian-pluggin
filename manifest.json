@@ -1,0 +1,10 @@
+{
+	"id": "auto-strikethrough-task",
+	"name": "Auto Strikethrough Tasks",
+	"version": "0.0.1",
+	"minAppVersion": "0.12.0",
+	"description": "Automatically adds strikethrough to completed tasks.",
+	"author": "Nomekuma",
+	"authorUrl": "https://github.com/Nomekuma",
+	"isDesktopOnly": false
+}
