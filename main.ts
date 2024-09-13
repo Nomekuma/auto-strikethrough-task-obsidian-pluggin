@@ -11,14 +11,15 @@ export default class AutoStrikethroughTasksPlugin extends Plugin {
 
         // Loop through all lines in the editor
         lines.forEach((line, index) => {
+          const trimmedLine = line.trim(); // Remove leading and trailing whitespace
           // Case 1: Handle completed tasks (- [x])
-          if (line.startsWith("- [x]") && !line.includes("~~")) {
+          if (trimmedLine.startsWith("- [x]") && !trimmedLine.includes("~~")) {
             // Add strikethrough if task is marked completed and not already struck through
-            const newLine = line.replace(
+            const newLine = trimmedLine.replace(
               /^- \[x\] (.*)$/,
               "- [x] ~~$1~~"
             );
-            editor.setLine(index, newLine);
+            editor.setLine(index, newLine.trim());
           }
 
           // Case 2: Handle unchecked tasks (- [ ])
@@ -28,7 +29,7 @@ export default class AutoStrikethroughTasksPlugin extends Plugin {
               /^- \[ \] ~~(.*)~~$/,
               "- [ ] $1"
             );
-            editor.setLine(index, newLine);
+            editor.setLine(index, newLine.trim());
           }
         });
       })
