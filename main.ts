@@ -15,23 +15,27 @@ export default class AutoStrikethroughTasksPlugin extends Plugin {
           const indent = line.match(/^\s*/)?.[0] || ""; // Capture leading whitespace (indentation)
 
           // Case 1: Handle completed tasks (- [x])
-          if (trimmedLine.startsWith("- [x]") && !trimmedLine.includes("~~")) {
-            // Add strikethrough if task is marked completed and not already struck through
-            const newLine = trimmedLine.replace(
-              /^- \[x\] (.*)$/,
-              "- [x] ~~$1~~"
-            );
-            editor.setLine(index, indent + newLine); // Preserve indentation
+          if (trimmedLine.startsWith("- [x]")) {
+            // Extract the task content after "- [x]"
+            const taskContent = trimmedLine.slice(6).trim(); 
+
+            // If task content is not already struck through, add strikethrough
+            if (!taskContent.startsWith("~~") || !taskContent.endsWith("~~")) {
+              const newLine = `- [x] ~~${taskContent}~~`;
+              editor.setLine(index, indent + newLine); // Preserve indentation
+            }
           }
 
           // Case 2: Handle unchecked tasks (- [ ])
-          if (trimmedLine.startsWith("- [ ]") && trimmedLine.includes("~~")) {
-            // Remove strikethrough if task is unchecked
-            const newLine = trimmedLine.replace(
-              /^- \[ \] ~~(.*)~~$/,
-              "- [ ] $1"
-            );
-            editor.setLine(index, indent + newLine); // Preserve indentation
+          if (trimmedLine.startsWith("- [ ]")) {
+            // Extract the task content after "- [ ]"
+            const taskContent = trimmedLine.slice(6).trim();
+
+            // If task is struck through, remove the strikethrough
+            if (taskContent.startsWith("~~") && taskContent.endsWith("~~")) {
+              const newLine = `- [ ] ${taskContent.slice(2, -2).trim()}`;
+              editor.setLine(index, indent + newLine); // Preserve indentation
+            }
           }
         });
       })
